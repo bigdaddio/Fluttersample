@@ -21,7 +21,7 @@ class GetHttpDataState extends State<First> {
 
     Object options = {
       // uncomment and add your API key
-      'key': "AIzaSyASUo8U9U-BchtxsqHX-SdI4m4vZGCe3EE",
+      //'key': "YOUR KEY HERE",
       'part': "snippet",
       'maxResults': "25",
       'q': "flutter",
