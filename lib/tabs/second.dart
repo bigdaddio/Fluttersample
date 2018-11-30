@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'dart:async';
 import 'package:http/http.dart' as http;
+import 'package:package_info/package_info.dart';
+import 'dart:io';
 import 'dart:convert';
 
 class Second extends StatefulWidget {
@@ -15,18 +17,24 @@ class GetHttpDataState extends State<Second> {
 
   Future<String> getJSONData() async {
 
+    PackageInfo packageInfo = await PackageInfo.fromPlatform();
+
     Object options = {
       // uncomment and add your API key
       //'key': "YOUR KEY HERE",
       'part': "snippet",
       'maxResults': "25",
       'q': "unity3D VR",
-      'type': ""
+      'type': "",
     };
+
+    String packageName = "";
+    if (Platform.isIOS)
+      packageName = packageInfo.packageName;
 
     Uri searchUrl = new Uri.https(base, url, options);
     var response = await http.get( searchUrl,
-        headers: {"Accept": "application/json"});
+        headers: {"Accept": "application/json", 'X-Ios-Bundle-Identifier': packageName});
 
     // Logs the response body to the console
     //print(response.body);

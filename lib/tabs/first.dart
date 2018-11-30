@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'dart:async';
 import 'package:http/http.dart' as http;
+import 'package:package_info/package_info.dart';
+import 'dart:io';
 import 'dart:convert';
 
 class First extends StatefulWidget {
@@ -15,6 +17,8 @@ class GetHttpDataState extends State<First> {
 
   Future<String> getJSONData() async {
 
+    PackageInfo packageInfo = await PackageInfo.fromPlatform();
+
     Object options = {
       // uncomment and add your API key
       //'key': "YOUR KEY HERE",
@@ -24,9 +28,14 @@ class GetHttpDataState extends State<First> {
       'type': ""
     };
 
+    // This is a bit nasty, only fill in bundle ID if iOS.
+    String packageName = "";
+    if (Platform.isIOS)
+      packageName = packageInfo.packageName;
+
     Uri searchUrl = new Uri.https(base, url, options);
     var response = await http.get( searchUrl,
-        headers: {"Accept": "application/json"});
+        headers: {"Accept": "application/json", 'X-Ios-Bundle-Identifier': packageName});
 
     // Logs the response body to the console
     //print(response.body);
